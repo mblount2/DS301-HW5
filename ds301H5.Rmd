@@ -169,9 +169,13 @@ table(knn.pred,Y_test)
 mean(knn.pred!=Y_test) 
 
 ```
+Logistic error rate = 0.1101928
+LDA error rate = 0.2093664
+KNN error rate = 0.2176309 (k=1 had lowest error rate)
 
+e) I recommend using logistic regression because it had the lowest misclassification by far out of all 3.
 
 
 Problem 3:
-a) The misclassification rate is (25+32)/(25+32+40+121) = 0.2614679. It is worse to have a false negative because they person will not receive proper treatment and would spread the virus because they think they do not have the virus.
+a) The misclassification rate is (25+32)/(25+32+40+121) = 0.2614679. It is worse to have a false negative because they person will not receive proper treatment and would spread the virus because they think they do not have the virus. We can change the posterior probability rate to change false negative rate and we would want to decrease the rate below 0.5 to decrease false negative.
 

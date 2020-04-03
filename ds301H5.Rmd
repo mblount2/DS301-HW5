@@ -51,6 +51,14 @@ e)
 
 
 f)
+```{r}
+library(class)
+X_train = as.matrix(X_train)
+X_test = as.matrix(X_test)
+knn.pred = knn(X_train,X_test,Y_train,k=3) 
+table(knn.pred,Y_test)
+mean(knn.pred!=Y_test) 
+```
 
 
 
@@ -178,4 +186,35 @@ e) I recommend using logistic regression because it had the lowest misclassifica
 
 Problem 3:
 a) The misclassification rate is (25+32)/(25+32+40+121) = 0.2614679. It is worse to have a false negative because they person will not receive proper treatment and would spread the virus because they think they do not have the virus. We can change the posterior probability rate to change false negative rate and we would want to decrease the rate below 0.5 to decrease false negative.
+
+
+
+b)
+
+
+
+c)
+
+
+
+
+d)
+  i.
+  
+  ii.
+  
+  iii. 
+
+
+
+
+
+
+
+
+
+
+
+
+
 

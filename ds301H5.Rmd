@@ -1,0 +1,128 @@
+---
+title: "DS 301 H5"
+author: "Mikaela Blount"
+date: "4/2/2020"
+output: html_document
+---
+
+Problem 1:
+a)
+π0 = 0.8
+π1 = 0.2
+P(X|Y=0) ~ N(2,3)
+P(X|Y=1) ~ N(4,3)
+
+b)
+```{r}
+mu0 = 2
+mu1 = 4
+sigma2 = 3
+
+
+```
+
+
+c)
+```{r}
+n=1000
+
+1/(n-2)*(800*var(x0)+200*var(x1))
+```
+
+
+d)
+```{r}
+Y = rep(1,1000)
+
+for(i in 1:1000){
+
+if(X_train[i]<value-you-derived){
+
+Y[i] = 0
+
+}
+
+}
+```
+
+
+
+e)
+
+
+f)
+
+
+
+
+g)
+
+
+
+
+
+h)
+
+
+
+Problem 2:
+```{r}
+library(dplyr)
+spam <- read.csv("~/Downloads/spambase.data", header=FALSE)
+spam = spam %>%
+  rename(spamCol = V58)
+```
+
+a)
+```{r}
+spam$spamCol = as.numeric(spam$spamCol)
+
+isSpam = spam %>%
+  filter(spamCol == 1)
+
+length(isSpam$spamCol)/length(spam$spamCol)*100
+
+notSpam = spam %>%
+  filter(spamCol == 0)
+
+length(notSpam$spamCol)/length(spam$spamCol)*100
+```
+Spam: 39.40448%
+Not spam: 60.59552%
+
+b) I will spilt the dataset into spam and not spam, randomly arrange the rows, and then take 80% to train and 20% to test. I will full join the spam train and not spam and then do the same for spam test and not spam test thus preserving the correct ratios from above.
+```{r}
+set.seed(42)
+
+rowsIsSpam <- sample(nrow(isSpam))
+isSpamRandom <- isSpam[rowsIsSpam, ]
+isSpamRandom = isSpamRandom %>%
+  arrange()
+
+len80percentIS = floor(nrow(isSpamRandom)*.8)
+trainIsSpam = isSpamRandom[1:len80percentIS,]
+testIsSpam = isSpamRandom[(len80percentIS+1):nrow(isSpamRandom),]
+
+rowsNotSpam <- sample(nrow(notSpam))
+notSpamRandom <- notSpam[rowsNotSpam, ]
+notSpamRandom = notSpamRandom %>%
+  arrange()
+
+len80percentNS = floor(nrow(notSpamRandom)*.8)
+trainNotSpam = notSpamRandom[1:len80percentNS,]
+testNotSpam = isSpamRandom[(len80percentNS+1):nrow(notSpamRandom),]
+
+train = full_join(trainIsSpam,trainNotSpam)
+test = full_join(testIsSpam,testNotSpam)
+```
+
+c)
+```{r}
+
+```
+
+
+
+Problem 3:
+a) The misclassification rate is (25+32)/(25+32+40+121) = 0.2614679. It is worse to have a false negative because they person will not receive proper treatment and would spread the virus because they think they do not have the virus.
+

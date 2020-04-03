@@ -11,38 +11,65 @@ a)
 π1 = 0.2
 P(X|Y=0) ~ N(2,3)
 P(X|Y=1) ~ N(4,3)
-
-b)
-```{r}
 mu0 = 2
 mu1 = 4
-sigma2 = 3
+sig^2 = 3
 
+b)
+d0(x) = 2x/3 - (4/6) + log(0.8) 
+-2x/3 = -(4/6) + log(0.8) - d0(x)
+x = -3/2(-(4/6) + log(0.8) - d0(x))
 
-```
-
+d1(x) = 4x/3 - 16/6 + log(0.8)
+-4x/3 = -16/6 + log(0.8) - d1(x)
+x = -3/4(-16/6 + log(0.8) - d1(x))
 
 c)
 ```{r}
-n=1000
+set.seed(11)
+X0 = rnorm(800,2,sd=3)
+mean(X0)
+X1 = rnorm(200,4,sd=3)
+mean(X1)
+X_train = c(X0,X1)
+Y_train = rep(c(0,1),c(800,200))
+sigmaSquared = 1/(1000-2)*(800*var(X0)+200*var(X1))
+sigmaSquared
 
-1/(n-2)*(800*var(x0)+200*var(x1))
+set.seed(12)
+X0_test = rnorm(800,2,sd=3)
+X1_test = rnorm(200,4,sd=3)
+Xtest = c(X0_test,X1_test)
+Ytest = rep(c(0,1),c(800,200))
+
+prob_y0 = 0.8*dnorm(X_train,2,sd=3)/(dnorm(X_train,2,sd=3)*0.8+dnorm(X_train,4,sd=3)*0.2)
+prob_y1 = 0.2*dnorm(X_train,4,sd=3)/(dnorm(X_train,2,sd=3)*0.2+dnorm(X_train,4,sd=3)*0.8)
+Y = rep(1,1000)
+for(i in 1:1000){
+	if(prob_y0[i]>prob_y1[i]){
+		Y[i] = 0
+	}
+}
+table(Y,Ytest)
+mean(Y!=Ytest)
+
+mean(prob_y0)
+mean(prob_y1)
 ```
-
+mu0 = 2.08667
+mu1 = 3.785188
+sigma^2 = 8.944863
+π0 = 0.7996883
+π1 = 0.1897487
 
 d)
 ```{r}
-Y = rep(1,1000)
-
-for(i in 1:1000){
-
-if(X_train[i]<value-you-derived){
-
-Y[i] = 0
-
-}
-
-}
+data.train = as.data.frame(cbind(Y_train,X_train))
+data.test = as.data.frame(cbind(Ytest,Xtest))
+lda.fit = lda(Y_train~X_train,data=data.train)
+lda.pred = predict(lda.fit,data.test)
+lda.fit
+mean(lda.pred$class!=Y_test)
 ```
 
 
@@ -52,16 +79,13 @@ e)
 
 f)
 ```{r}
-library(class)
 X_train = as.matrix(X_train)
-X_test = as.matrix(X_test)
+X_test = as.matrix(Xtest)
 knn.pred = knn(X_train,X_test,Y_train,k=3) 
-table(knn.pred,Y_test)
-mean(knn.pred!=Y_test) 
+table(knn.pred,Ytest)
+mean(knn.pred!=Ytest) 
 ```
-
-
-
+Test error rate: 0.233
 
 g)
 
@@ -203,7 +227,7 @@ d)
   
   ii.
   
-  iii. 
+  iii. KNN would be best because KNN handles nonlinearity and complexity better than LDA or logistic regression.
 
 
 

@@ -2,7 +2,9 @@
 title: "DS 301 H5"
 author: "Mikaela Blount"
 date: "4/2/2020"
-output: html_document
+output:
+  word_document: default
+  html_document: default
 ---
 
 Problem 1:
@@ -26,6 +28,9 @@ x = -3/4(-16/6 + log(0.8) - d1(x))
 
 c)
 ```{r}
+library(class)
+library(MASS)
+
 set.seed(11)
 X0 = rnorm(800,2,sd=3)
 mean(X0)
@@ -50,6 +55,7 @@ for(i in 1:1000){
 		Y[i] = 0
 	}
 }
+#bayes error rate
 table(Y,Ytest)
 mean(Y!=Ytest)
 
@@ -69,13 +75,15 @@ data.test = as.data.frame(cbind(Ytest,Xtest))
 lda.fit = lda(Y_train~X_train,data=data.train)
 lda.pred = predict(lda.fit,data.test)
 lda.fit
-mean(lda.pred$class!=Y_test)
+t1 = table(lda.pred$class,Ytest)
+mean(lda.pred$class!=Ytest)
+
 ```
 
 
-
 e)
-
+LDA = 0.2
+Bayes = 0.199
 
 f)
 ```{r}
@@ -87,13 +95,9 @@ mean(knn.pred!=Ytest)
 ```
 Test error rate: 0.233
 
-g)
+g) Both LDA (0.2) and KNN (0.233) have slightly higher test rate errors than Bayes (0.199).
 
-
-
-
-
-h)
+h) I would recommend using LDA over KNN because it had a lower error rate (0.2 vs 0.233) meaning it LDA will correctly classify more than KNN.
 
 
 
@@ -214,29 +218,30 @@ a) The misclassification rate is (25+32)/(25+32+40+121) = 0.2614679. It is worse
 
 
 b)
+```{r}
+library(ProbYX)
+
+ydat = c(0,1,0,1,1) # red = 0, blue = 1
+xdat = c(-2,5,-1,10,5)
+
+MLEs(ydat = ydat,xdat = xdat,distr = "exp")
+```
+B0 = 1.960784
+B1 = 0.85
 
 
-
-c)
-
-
-
+c) KNN struggles with the curse of dimensionality. Having 10,000 predictors means that it will 10,000-dimensional so points that would be close in a 2-dimensional case are super far apart in a 10,000-dimensional case.
 
 d)
-  i.
+  i. Logistic regression would be best because it is less resistant to outliers than LDA and the sample size is not large enough for KNN.
   
-  ii.
+  ii. LDA would be best because it is large enough to classify better than logistic regression and it is not complex or non-linear enough for KNN to be best.
   
   iii. KNN would be best because KNN handles nonlinearity and complexity better than LDA or logistic regression.
 
+e) LDA performs better than QDA when the groups are linear and there is constant variance. The model is less likely to be prone to underfitting (low variance, high bias) because the model is highly linear and has constant variance which LDA will capture better than QDA.
 
-
-
-
-
-
-
-
+f) Since the groups are linear than the bayes decision boundary will be linear, QDA will perform better than LDA because QDA has more flexibility to form around that specific trainning data. This could lead to overfitting but since we are just concerned what will fit better for just the trainning data, QDA would be better.
 
 
 

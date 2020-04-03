@@ -118,6 +118,15 @@ test = full_join(testIsSpam,testNotSpam)
 
 c)
 ```{r}
+train = na.omit(train)
+test = na.omit(test)
+  
+X_train = train[,1:57]
+Y_train = train[,58]
+X_test = test[,1:57]
+Y_test = test[,58]
+
+
 #logistic
 glm.train = glm(spamCol~.,data=train, family=binomial)
 
@@ -139,7 +148,7 @@ library(MASS)
 
 lda.fit = lda(spamCol~.,data=train)
 
-lda.pred = predict(lda.fit,test$spamCol)
+lda.pred = predict(lda.fit,test)
 names(lda.pred)
 head(lda.pred$class) # automatically assigns Y to the class with largest probability 
 head(lda.pred$posterior)
@@ -148,18 +157,9 @@ head(lda.pred$posterior)
 
 t1 = table(lda.pred$class,Y_test)
 mean(lda.pred$class!=Y_test)
-t1[1,2]/sum(t1[,2]) #false_neg
-t1[2,1]/sum(t1[,1]) #false_pos
+
 
 #KNN
-train = na.omit(train)
-test = na.omit(test)
-  
-X_train = train[,1:57]
-Y_train = train[,58]
-X_test = test[,1:57]
-Y_test = test[,58]
-
 
 library(class)
 X_train = as.matrix(X_train)
